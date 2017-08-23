@@ -1,0 +1,576 @@
+
+<div class="row">
+    <div class="col-md-6 marginTop100 marginBottom25 center-block floatNone">
+        <h1 class="text-center turquoiseText">Longbenton Leave</h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div id="leaveMenuHolder" class="col-md-3 hide">
+        <div id=''>
+            <h3>Menu</h3>
+
+            <ul class="list-unstyled leaveMenu">
+                <li>
+                    <a class="activeMenu" href="#/calendar"><i class="fa fa-fw fa-calendar" aria-hidden="true"></i>My Leave</a>
+                </li>
+                <li>
+                    <a class="" href="#/allUsersLeave"><i class="fa fa-fw fa-users" aria-hidden="true"></i>View All Staff Leave</a>
+                </li>
+            </ul>
+        </div>
+        <hr class="">
+
+            <h3>Guide</h3>
+
+            <ul class="list-unstyled leaveMenu leaveGuide marginBottom25">
+                <li class=""><span class="guideSquare bankHolStyling"></span>Bank Holiday</li>
+            </ul>
+            
+            <ul class="list-unstyled leaveMenu leaveGuide marginBottom25">
+                <li class="blueText"><i class="fa fa-fw fa-calendar" aria-hidden="true"></i>Annual Leave</li>
+                <li class="purpleText"><i class="fa fa-fw fa-calendar-times-o" aria-hidden="true"></i>Non Working Day</li>
+                <li class="greenText"><i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>Flexi</li>
+                <li class="orangeText"><i class="fa fa-fw fa-graduation-cap" aria-hidden="true"></i>Training</li>
+                <li class="redText"><i class="fa fa-fw fa-medkit" aria-hidden="true"></i>Sick</li>
+                <li class="darkGreenText"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i>Authorised Appointment</li>
+                <li class="pinkText"><i class="fa fa-fw fa-home" aria-hidden="true"></i>Working From Home</li>
+                <li class="yellowText"><i class="fa fa-fw fa-gavel" aria-hidden="true"></i>Jury Service</li>
+                <li class="brownText"><i class="fa fa-fw fa-question-circle" aria-hidden="true"></i>Other</li>
+            </ul>
+
+    </div>
+    <div class="col-md-8 marginTop50 marginBottom25 animated fadeIn">
+        <div id='calendar'></div>
+    </div>
+    <div class="col-md-1">
+        <div id=''></div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Input Planned Leave</h4>
+      </div>
+      <div class="modal-body">
+        <form action="">
+            <input type="hidden" class="form-control" id="hiddenEventId">
+            <p>Date selected: <span id="selectedDate" class="selectedDateClass"></span></p>
+            <hr>
+
+            <p>Type of absence:</p>
+
+            <select class="form-control input-lg" id="leaveType">
+                <option>Annual Leave</option>
+                <option>Non Working Day</option>
+                <option>Flexi</option>
+                <option>Training</option>
+                <option>Sick</option>
+                <option>Authorised Appointment</option>
+                <option>Working From Home</option>
+                <option>Jury Service</option>
+                <option>Other</option>
+            </select>
+
+            <div class="row hiddenNotImportant" id="otherReasonHolder">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="otherReason" placeholder="Other Reason">
+                    <p class="redText hiddenNotImportant" id="otherReasonValidationMsg">* Reason for absence is mandatory!</p>
+                </div>
+            </div>
+
+            <div class="row" id="absenceLengthHolder">
+                <div class="col-md-12">
+                    <hr>
+                    <p>Length of absence:</p>
+
+                    <div class="btn-group btn-group-justified">
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">AM</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">PM</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">Day</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">Week</a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger hiddenNotImportant" id="modalDeleteEventBtn">Delete Absence</button>
+        <button type="button" class="btn btn-default" id="modalCloseBtn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="modalSaveBtn" disabled>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src='scripts/moment.min.js'></script>
+<script src='scripts/fullcalendar.js'></script>
+
+<script>
+    $(document).ready(function() {
+
+        // globals
+        var absenceLength;
+        var selectedDate;
+
+        // add some animating classes when page first loaded
+        var fullUrl = window.location.href;
+        var firstTimeIndic = fullUrl.substr(fullUrl.length - 5);
+
+        if ( firstTimeIndic == 'first') {
+            $('#leaveMenuHolder').addClass('animated bounceInLeft');
+            $('#leaveMenuHolder').removeClass('hide');
+        }
+        else {
+            $('#leaveMenuHolder').removeClass('hide');
+        }
+
+
+/**************************************** FullCalendar related ****************************************/
+
+        // page is now ready, initialize the calendar...
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            weekends: false, // will hide Saturdays and Sundays
+            header: {
+                left:   'prev,next',
+                center: 'title',
+                right:  'today,month'
+            },
+            noEventsMessage: "No Leave booked for this month",
+    
+            eventRender: function (event, element, view) {
+                var i = document.createElement('i');
+                // Add all your other classes here that are common, for demo just 'fa'
+                i.className = 'fa'; /*'ace-icon fa yellow bigger-250 '*/
+                i.classList.add(event.icon);
+                // If you want it inline with title
+                element.find('div.fc-content').prepend(i);
+                // If you want it on a line before
+                // element.prepend(i);
+                // Or the next line after title
+                //element.
+
+                // needed for tooltips
+                element.attr('title', event.tooltip);
+
+                if (event.length == 'AM'){
+                    // mark if AM half day
+                    element.find('div.fc-content').prepend('<span class="halfDay">AM</span>');
+                }
+                else if (event.length == 'PM'){
+                    // mark if PM half day
+                    element.find('div.fc-content').append('<span class="halfDay">PM</span>');
+                }
+            },
+
+            dayClick: function(date, jsEvent, view) {
+
+                //alert('Clicked on: ' + date.format());
+                //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                //alert('Current view: ' + view.name);
+                
+                //if ( /*$(this).hasClass('bankHolStyling') == false &&*/ $(this).hasClass('nonWorkingDayStyling') == false){
+                    
+                    // place selected date into js variable & modal
+                    selectedDate = date.format(); 
+                    var formatedDate = moment(date.format()).format("dddd, Do MMMM YYYY");
+                    $('#selectedDate').html(formatedDate);
+                    $('#hiddenEventId').val('');
+                    $("#leaveType").val('Annual Leave');
+                    $('#absenceLengthHolder').removeClass('hiddenNotImportant');
+                    $('#modalDeleteEventBtn').addClass('hiddenNotImportant');
+                    // display the modal
+                    $('#myModal').modal('show');
+                //}
+            },
+
+            eventClick: function(calEvent, jsEvent, view) {
+
+               // if (/*calEvent.title != 'bankHoliday' &&*/ calEvent.title != 'nonWorkingDay') {
+                    
+                    alert('Event: ' + calEvent.title);
+                    alert('Event: ' + calEvent.id);
+                    alert('date: ' + calEvent.start);
+                    
+                    // place selected event into modal
+                    $('#hiddenEventId').val(calEvent.id);
+
+                    selectedDate = calEvent.start; 
+                    var formatedDate = moment(calEvent.start).format("dddd, Do MMMM YYYY");
+                    $('#selectedDate').html(formatedDate);
+
+                    $("#leaveType").val(calEvent.title);
+
+                    var otherReasonIndic = calEvent.tooltip.substr(0, 5);
+                    if (otherReasonIndic == 'Other') {
+                    var otherReasonText = calEvent.tooltip.substring(8);
+                        $('#otherReason').val(otherReasonText);
+                        $('#otherReasonHolder').slideDown('800');
+                    }
+
+                    $('#absenceLengthHolder').addClass('hiddenNotImportant');
+                    $('#modalDeleteEventBtn').removeClass('hiddenNotImportant');
+
+                    // display the modal
+                    $('#myModal').modal('show');
+               // }
+
+            },
+
+            eventSources: [
+                // {
+                //     events: [ // Non working days
+                //         {
+                //             title  : 'nonWorkingDay',
+                //             start  : '2017-01-16'
+                //         },
+                //         {
+                //             title  : 'nonWorkingDay',
+                //             start  : '2017-02-06'
+                //         },
+                //         {
+                //             title  : 'nonWorkingDay',
+                //             start  : '2017-02-27',
+                //         }
+                //     ],
+                //     color: '#0B5144',     // an option!
+                //     textColor: '#0B5144' // an option!
+                // },
+                // your event source
+                {
+                    events: [
+                        {
+                            id: 1,
+                            title: 'Annual Leave',
+                            tooltip: 'Annual Leave',
+                            start: '2017-02-01',
+                            icon: 'fa-calendar',
+                            className: 'annualLeave'
+                        },
+                        {
+                            id: 2,
+                            title: 'Training',
+                            tooltip: 'Training',
+                            start: '2017-02-07',
+                            icon: 'fa-graduation-cap',
+                            className: 'training'
+                        },
+                        {
+                            id: 21,
+                            title: 'Training',
+                            tooltip: 'Training',
+                            start: '2017-02-08',
+                            icon: 'fa-graduation-cap',
+                            className: 'training'
+                        },
+                        {
+                            id: 22,
+                            title: 'Training',
+                            tooltip: 'Training',
+                            start: '2017-02-09',
+                            icon: 'fa-graduation-cap',
+                            className: 'training'
+                        },
+                        {
+                            id: 3,
+                            title: 'Jury Service',
+                            tooltip: 'Jury Service',
+                            start: '2017-02-13',
+                            icon: 'fa-gavel',
+                            className: 'juryService'
+                        },
+                        {
+                            id: 31,
+                            title: 'Jury Service',
+                            tooltip: 'Jury Service',
+                            start: '2017-02-14',
+                            icon: 'fa-gavel',
+                            className: 'juryService'
+                        },
+                        {
+                            id: 32,
+                            title: 'Jury Service',
+                            tooltip: 'Jury Service',
+                            start: '2017-02-15',
+                            icon: 'fa-gavel',
+                            className: 'juryService'
+                        },
+                        {
+                            id: 33,
+                            title: 'Jury Service',
+                            tooltip: 'Jury Service',
+                            start: '2017-02-16',
+                            icon: 'fa-gavel',
+                            className: 'juryService'
+                        },
+                        {
+                            id: 4,
+                            title: 'Flexi',
+                            tooltip: 'Flexi',
+                            start: '2017-02-20',
+                            icon: 'fa-clock-o',
+                            className: 'flexi'
+                        },
+                        {
+                            id: 5,
+                            title: 'Sick',
+                            tooltip: 'Sick',
+                            start: '2017-03-13',
+                            icon: 'fa-medkit',
+                            className: 'sick'
+                        },
+                        {
+                            id: 6,
+                            title: 'Authorised Appointment',
+                            tooltip: 'Authorised Appointment',
+                            start: '2017-03-21',
+                            length: 'PM',
+                            icon: 'fa-check-circle',
+                            className: 'authorisedAppt'
+                        },
+                        {
+                            id: 6,
+                            title: 'Other',
+                            tooltip: 'Other - doing the dishes',
+                            start: '2017-03-10',
+                            icon: 'fa-question-circle',
+                            className: 'other'
+                        },
+                        {
+                            id: 7,
+                            title: 'Working From Home',
+                            tooltip: 'Working From Home',
+                            start: '2017-02-28',
+                            length: 'AM',
+                            icon: 'fa-home',
+                            className: 'wfh'
+                        },
+                        {
+                            id: 71,
+                            title: 'Non Working Day',
+                            tooltip: 'Non Working Day',
+                            start: '2017-01-16',
+                            icon: 'fa-calendar-times-o',
+                            className: 'nwd'
+                        },
+                        {
+                            id: 72,
+                            title: 'Non Working Day',
+                            tooltip: 'Non Working Day',
+                            start: '2017-02-06',
+                            icon: 'fa-calendar-times-o',
+                            className: 'nwd'
+                        },
+                        {
+                            id: 73,
+                            title: 'Non Working Day',
+                            tooltip: 'Non Working Day',
+                            start: '2017-02-27',
+                            icon: 'fa-calendar-times-o',
+                            className: 'nwd'
+                        }
+                    ]
+                }
+            ]
+        });
+
+
+
+
+
+        var bankHolArray = [ 
+            {
+                title  : 'bankHoliday',
+                start  : '2017-01-02'
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-04-14'
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-04-17',
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-05-01',
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-05-29',
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-08-28',
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-12-25',
+            },
+            {
+                title  : 'bankHoliday',
+                start  : '2017-12-26',
+            }];
+
+            // call function to render bank holidays onto calendar, on page load
+            LoadUpBankHolidays(bankHolArray);
+
+            // call function to render today onto calendar, on page load
+            renderToday();
+
+
+/**************************************** Click events ****************************************/
+        $('.fc-prev-button').click(function() {
+            // call function to render bank holidays onto calendar
+            LoadUpBankHolidays(bankHolArray);
+            // call function to render today onto calendar, on page load
+            renderToday();
+        });
+        $('.fc-next-button').click(function() {
+            // call function to render bank holidays onto calendar
+            LoadUpBankHolidays(bankHolArray);
+            // call function to render today onto calendar, on page load
+            renderToday();
+        });
+        $('.fc-today-button').click(function() {
+            // call function to render bank holidays onto calendar
+            LoadUpBankHolidays(bankHolArray);
+            // call function to render today onto calendar, on page load
+            renderToday();
+        });
+        
+        
+        
+        $('#leaveType').change(function() {
+            var selectedLeave = $("#leaveType option:selected").val();
+
+            if (selectedLeave == 'Other') {
+                //alert('selected = ' + selectedLeave);
+                //$('#otherReasonHolder').removeClass('hide');
+                $('#otherReasonHolder').slideDown('800');
+                $("#otherReason").focus();
+            }else {
+                $('#otherReason').val('');
+                //$('#otherReasonHolder').addClass('hide');
+                $('#otherReasonHolder').slideUp('800');
+            }
+
+            if ($("#hiddenEventId").val().length > 0 ){
+                $('#modalSaveBtn').prop('disabled', false);
+            }
+        });
+
+        $('#otherReason').focus(function() {
+            $('#otherReasonValidationMsg').addClass('hiddenNotImportant');
+        });
+
+        $('.absenceLength').click(function() {
+            // format button style
+            $('.absenceLength').css('background-color', '#4e5d6c');
+            $(this).css('background-color', '#0182d2');
+            // save selected length
+            absenceLength = $(this).html();
+            $('#modalSaveBtn').prop('disabled', false); 
+            $("#modalSaveBtn").focus();
+        });
+
+
+
+        $('#modalSaveBtn').click(function() {
+
+            var existingEventId = $("#hiddenEventId").val();
+            var selectedLeaveType = $("#leaveType option:selected").val();
+            var otherReasonText = $('#otherReason').val();
+
+            if (selectedLeaveType == 'Other' && otherReasonText.length == 0){
+                $('#otherReasonValidationMsg').removeClass('hiddenNotImportant');
+                return;
+            } 
+
+            if ($("#hiddenEventId").val().length > 0 ){
+                // update existing event with different type of leave
+                alert('id = ' + existingEventId);
+                alert('type = ' + selectedLeaveType);
+                if (selectedLeaveType == 'Other'){
+                    alert('otherReasonText = ' + otherReasonText);
+                }
+            }else {
+                // save new leave event
+                alert('date = ' + selectedDate);
+                alert('type = ' + selectedLeaveType);
+                if (selectedLeaveType == 'Other'){
+                    alert('otherReasonText = ' + otherReasonText);
+                }
+                alert('length = ' + absenceLength );
+            }           
+        });
+
+
+        $('#modalDeleteEventBtn').click(function() {
+
+            var existingEventId = $("#hiddenEventId").val();
+
+            alert('Delete event: id = ' + existingEventId);
+            
+        });
+
+        // close modal and reset inputs
+        $('#modalCloseBtn').click(function() {
+            $('#hiddenEventId').val('');
+            $("#leaveType").val('100');
+            $('#otherReason').val('');
+            absenceLength = null;
+            selectedDate = null;
+            $('.absenceLength').css('background-color', '#4e5d6c');
+            $('#modalSaveBtn').prop('disabled', true);
+            $('#otherReasonHolder').slideUp('800');
+        });
+
+    });
+
+
+
+
+    // function validate(){
+    //     if (selectedLeaveType == 800 && $('#otherReason').val().length == 0){
+    //         $('#otherReasonValidationMsg').removeClass('hiddenNotImportant');
+    //     } 
+    // }
+
+
+/**************************************** Functions ****************************************/
+    function getEventDate(event) { var dateobj = event.start;
+        //date = dateobj.getFullYear() + '-' + (dateobj.getMonth()+1) +'-'+ dateobj.getDate();
+        var date = moment(dateobj).format("YYYY-MM-DD");
+        //alert (date);
+        return date;
+    }
+
+
+    function LoadUpBankHolidays(bankHolArray){
+        for(var i = 0; i < bankHolArray.length; i++) {
+            var obj = bankHolArray[i];
+            $('.fc-day[data-date="' + obj.start + '"]').addClass("bankHolStyling");
+            $('.fc-day[data-date="' + obj.start + '"]').html('<span class="circle">BH</span>');
+        }
+    }
+
+
+    function renderToday(){
+        $('.fc-day.fc-today').addClass("text-center");
+        $('.fc-day.fc-today').html('<span class="todayStyle">today</span>');
+    }
+
+
+</script>
+

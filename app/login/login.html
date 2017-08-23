@@ -1,0 +1,51 @@
+<form ng-submit="submit()" name="login" class="form-signin" novalidate>
+    
+    <div id="loginFormHolder" class="row animated fadeIn">
+        <div class="col-md-5 marginTop150 marginBottom25 center-block floatNone">
+
+            <h1 class="turquoiseText">Login</h1>
+
+            <div class="row marginBottom10">
+                <div class="col-xs-12">
+                    <input name="email" ng-model="email" type="email" class="form-control marginNone" placeholder="Email address" required>
+                    <span ng-show="login.email.$dirty && login.email.$invalid" class="formInputErrorText">Please enter a valid email.</span>
+                </div>
+            </div>
+            <div class="row marginBottom10">
+                <div class="col-xs-12">
+                    <input name="password" ng-model="password" type="password" class="form-control marginNone" placeholder="Password" required>
+                </div>
+            </div>
+
+            <button ng-disabled="login.$invalid" class="btn btn-lg btn-primary btn-block" id="loginBtn" type="submit">Login</button>
+            <br />
+            <!--<a class="requestAccessLink pull-left" href="#/forgotPassword">Forgotten Password?</a>
+            <a class="requestAccessLink pull-left" href="#/registration">Register new user(tmp!)</a>
+            <a id="requestAccessBtn" class="requestAccessLink pull-right" href="#/requestAccess">Request Access</a>-->
+            <a id="passwordResetBtn" class="requestAccessLink pull-right" href="#/passwordReset">Forgotten Password?</a>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function() {
+        var first = true;
+
+        $('#passwordResetBtn').click(function(e) {
+           // alert('first = ' + first);
+            if (first === true){
+                e.preventDefault();
+                first = false;
+                $('#loginFormHolder').removeClass('fadeIn');
+                $('#loginFormHolder').addClass('bounceOutLeft');
+                
+                
+                $('#loginFormHolder').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                    $('#passwordResetBtn').click();
+                });
+            }
+         });
+
+    });
+</script>

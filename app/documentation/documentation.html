@@ -1,0 +1,441 @@
+
+<div id="documentsFormHolder" class="row animated bounceInDown form-horizontal">
+    <div class="col-md-12 marginTop120 marginBottom25 center-block floatNone">
+
+        <h1 class="form-signin-heading text-center turquoiseText marginBottom25">Documents &amp; Links</h1>
+
+        <div ng-controller="DocumentationCtrl as vm">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="docSectionCog pull-right turquoiseText" id="sectionEdit_item.id">
+                        <!--<i class="fa fa-cog fa-2x" ng-class="{'fa-spin': hover}" aria-hidden="true" ng-click="showEditDocumentsPopup()" data-toggle="tooltip" data-placement="right" title="Edit Documents &amp; Links"></i>-->
+                        <i class="fa fa-cog fa-2x" ng-class="{'fa-spin': hover}" aria-hidden="true" ng-click="showEditDocumentsPopup()"></i>
+                    </div>
+                </div>
+            </div>
+
+
+
+<!-- ################################ "Edit Documents & Links" popup ################################ -->
+            <div class="popupHolder" ng-show="showPopup">
+                <span class="popupTitle">Edit Documents &amp; Links</span>
+                <ul class="">
+                    <li ng-click="editMenu()"><i class="fa fa-th-list" aria-hidden="true"></i>Edit Menu</li>
+                    <!--<li ng-click="editSections()"><i class="fa fa-terminal" aria-hidden="true"></i>Edit Sections</li>-->
+                    <li ng-click="editDocuments()"><i class="fa fa-file-o" aria-hidden="true"></i>Edit Documents</li>
+                </ul>
+            </div>
+<!-- ################################################################ -->
+
+
+
+            <div class="row">
+                <div class="col-md-2 noPaddingRight">
+                    <aside>
+
+                        <!--create the left hand menu-->
+                        <ul class="nav nav-pills nav-stacked" ng-init="vm.tab=1">
+                            <li ng-repeat="menuItem in vm.documentsMenuList | filter:{ isActive: true }" ng-class="{ active: vm.tab===menuItem.menuOrder }">
+                                <a href ng-click="vm.tab = menuItem.menuOrder">{{menuItem.menuTitle}}</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+
+
+                <div class="col-md-10 noPaddingRight borderTopTurquoise">
+                    
+                    <!--create the main right hand section with all the links, docs etc-->
+                    <div ng-repeat="menuItem in vm.documentsMenuList" ng-show="vm.tab === menuItem.menuOrder">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h2 class="marginBottom25 animated fadeIn">{{menuItem.menuDescription}}</h2>
+                            </div>
+                            <div class="col-md-2">
+                                <!--<div class="docSectionCog pull-right turquoiseText" id="sectionEdit_item.id" ng-click="editDocumentationSection(item.id)" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">-->
+                            </div>
+                        </div>
+
+
+                        <div class="row marginLeft-5">
+                            <!--###### permanently here ###### -->
+
+                            <div ng-repeat="item in documentsItemsList | filter:{ menuId: menuItem.id }" class="col-xs-12 col-sm-6 padding10 text-center">
+                                <div class="docHolder animated" ng-class-odd="'leftAnimation zoomIn'" ng-class-even="'rightAnimation zoomIn'" ng-click="gotoDocument(this)" data-toggle="tooltip" data-placement="bottom" title="{{item.tooltipText}}">
+                                    <!--<div class="docHolder animated" ng-style="{{item.animationDelay}}" ng-click="gotoDocument(this)"   data-toggle="tooltip" data-placement="bottom" title="{{item.tooltipText}}">-->
+                                    <!--ng-style="'-webkit-transition-delay': {{item.animationDelay}}; 'transition-delay': {{item.animationDelay}};"-->
+                                    <div class="row">
+                                        <div class="col-xs-3 noPaddingRight">
+                                            <div class="docType" ng-switch on="item.iconType">
+                                                <i ng-switch-when="technow" class="fa fa-list-ol fa-3x hvr-icon-grow" aria-hidden="true"></i>
+                                                <i ng-switch-when="folder" class="fa fa-folder-open fa-3x hvr-icon-grow" aria-hidden="true"></i>
+                                                <i ng-switch-when="file" class="fa fa-file fa-3x hvr-icon-grow" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-9 text-left">
+                                            <span class="docTitle">{{item.title}}</span>
+                                            <div class="docDesc">{{item.description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+
+    $(document).ready(function() {
+        // initialise all tooltips on the page
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+        $("body").popover({ 
+            selector: '[data-toggle=popover]', 
+           // container: 'body' // Popover scrolls with body
+         });
+
+        // $('[data-toggle="popover"]').popover();
+    });
+
+</script>
+
+
+
+
+
+<!-- ################################ Documents & Links - Menu modal ################################ -->
+<script type="text/ng-template" id="menuModal.html">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <form ng-submit="submit()" name="documentationMenuForm" class="form-signin" novalidate>
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Edit Menu</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>It's your call...</p>
+                        
+                        <div class="row" >
+                            <div class="col-xs-1">
+                            </div>
+                            <div class="col-xs-10">
+                                <ul data-as-sortable data-ng-model="documentsMenuList" class="ngSortable">
+                                    <li ng-repeat="item in documentsMenuList" data-as-sortable-item>
+                                        <div data-as-sortable-item-handle>
+                                            <!--index: {{$index}} | id: {{item.id}} | title: {{item.menuTitle}}-->
+                                            <div class="row" >
+                                                <div class="col-xs-1 text-center paddingLeft35 paddingTop20">
+                                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                                </div>
+
+                                                <div class="col-xs-10 noPaddingRight borderLeft marginLeft10 paddingLeft5 marginBottom10">
+                                                    <div class="row" >
+                                                        <div class="col-xs-8 noPaddingRight">
+                                                            <!--{{item.menuTitle}}-->
+                                                            <input name="menuTitle" 
+                                                                type="text" 
+                                                                class="form-control marginNone sortableInput marginTop-8" 
+                                                                placeholder=">> Menu Title" 
+                                                                data-toggle="tooltip" data-placement="bottom" title="Menu Title"
+                                                                ng-model="item.menuTitle"
+                                                                ng-class="{ 'has-error' : item.menuTitle.$invalid }" 
+                                                                required>
+                                                                <!--ng-required="item.isActive">-->
+                                                            <div ng-messages for="item.menuTitle.$error" class="formInputErrorText">
+                                                                <div ng-message="required" class="formInputErrorText">Menu Title is required.</div>
+                                                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-4 noPaddingLeft">
+                                                            <div class="col-xs-8 noPaddingRight noPaddingLeft">
+                                                                <label for="item.isActive" class="control-label noMargin"><p class="">Is Active:</p></label> 
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                                <div class="checkbox sortableCheckbox">
+                                                                    <label>
+                                                                        <input type="checkbox" 
+                                                                            ng-model="item.isActive" 
+                                                                            ng-click="isActiveMenuItem($index)"
+                                                                            aria-label="Is Active">
+                                                                            <!--ng-disabled="item.deleteMe" -->
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row" >
+                                                        <div class="col-xs-8 noPaddingRight">
+                                                            <input name="menuDescription" 
+                                                                type="text" 
+                                                                class="form-control marginNoneNotImportant sortableInput marginTop2" 
+                                                                placeholder=">> Menu Description" 
+                                                                data-toggle="tooltip" data-placement="bottom" title="Menu Description"
+                                                                ng-model="item.menuDescription"
+                                                                ng-class="{ 'has-error' : item.menuDescription.$invalid }" 
+                                                                required>
+                                                        </div>
+                                                        
+                                                        <div class="col-xs-4 noPaddingLeft" ng-if="item.documentItemCount === 0 && item.deleteMe === false">
+                                                            <button type="button" 
+                                                                class="btn btn-primary deleteMenuItemBtn" 
+                                                                ng-click="deleteMenuItem($index)">
+                                                                <i class="cr-icon glyphicon glyphicon-trash"></i>Delete
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-4 noPaddingLeft orangeText" ng-if="item.deleteMe === true">
+                                                            <span><i class="cr-icon glyphicon glyphicon-trash"></i>To Be Deleted</span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+
+                        <div class="row" >
+                            <div class="col-xs-1">
+                            </div>
+                            <div class="col-xs-10 marginBottom5 marginTop10 center-block floatNone">
+                                <button type="button" ng-click="addNewMenu()" class="btn btn-lg btn-primary btn-block">Add</button>
+                            </div>
+                            <div class="col-xs-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="cancelMenu()" data-dismiss="modal">Cancel</button>
+                        <button type="button" ng-disabled="documentationMenuForm.$invalid" ng-click="saveMenu()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+<!-- ################################################################ -->
+
+
+
+
+<!-- ################################ Documents Items modal ################################ -->
+<script type="text/ng-template" id="documentsModal.html">
+    <div class="modal fade">
+        <div class="modal-dialog extraWideDialog">
+            <form ng-submit="submit()" name="documentationItemsForm" class="form-signin" novalidate>
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Edit Documents &amp; Links</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>It's your call...</p>
+
+
+                        <div class="row marginBottom10">
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                                <select ng-model="selectedMenu" ng-options="menuItem as menuItem.menuTitle for menuItem in documentsMenuList | filter:{ isActive : 'true' }" ng-click="menuSelected(selectedMenu)" class="form-control input-lg">
+                                    <option value="">Please Select a Menu</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                        </div>
+                        
+                        
+                        <div id="linksHolder" ng-show="showlinksHolder" >
+                            <div class="row" >
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-10">
+                                    <ul data-as-sortable data-ng-model="documentsItemsList" class="ngSortable">
+                                        <li ng-repeat="item in documentsItemsList | filter:{ menuId: selectedMenuId }" data-as-sortable-item>
+                                            <div data-as-sortable-item-handle>
+                                                <!--index: {{$index}} | id: {{item.id}} | title: {{item.menuTitle}}-->
+                                                <div class="row" >
+                                                    <div class="col-xs-1 text-center paddingLeft35 paddingTop40">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </div>
+
+                                                    <div class="col-xs-10 noPaddingRight borderLeft marginLeft10 paddingLeft5 marginBottom10">
+                                                        <div class="row" >
+                                                            <div class="col-xs-6 noPaddingRight">
+                                                                <!--{{item.menuTitle}}-->
+                                                                <input name="title" 
+                                                                    type="text" 
+                                                                    class="form-control marginNone sortableInput marginTop-8" 
+                                                                    placeholder=">> Title" 
+                                                                    data-toggle="tooltip" data-placement="bottom" title="Title"
+                                                                    ng-model="item.title"
+                                                                    ng-class="{ 'has-error' : item.title.$invalid }" 
+                                                                    required>
+                                                                    <!--ng-required="item.isActive">-->
+                                                                <div ng-messages for="item.title.$error" class="formInputErrorText">
+                                                                    <div ng-message="required" class="formInputErrorText">Title is required.</div>
+                                                                    <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-6 noPaddingRight">
+                                                                <input name="description" 
+                                                                    type="text" 
+                                                                    class="form-control marginNoneNotImportant sortableInput marginTop2" 
+                                                                    placeholder=">> Description" 
+                                                                    data-toggle="tooltip" data-placement="bottom" title="Description"
+                                                                    ng-model="item.description"
+                                                                    ng-class="{ 'has-error' : item.description.$invalid }" 
+                                                                    >
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row" >
+                                                            <div class="col-xs-6 noPaddingRight">
+                                                                <div class="row" >
+                                                                    <div class="col-xs-11 noPaddingRight">
+                                                                        <input name="url" 
+                                                                            type="text" 
+                                                                            class="form-control marginNoneNotImportant sortableInput marginTop2" 
+                                                                            placeholder=">> URL"
+                                                                            data-toggle="tooltip" data-placement="bottom" title="URL" 
+                                                                            ng-model="item.url"
+                                                                            ng-class="{ 'has-error' : item.url.$invalid }" 
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-6 noPaddingRight">
+                                                                <input name="tooltipText" 
+                                                                    type="text" 
+                                                                    class="form-control marginNoneNotImportant sortableInput marginTop2" 
+                                                                    placeholder=">> Tooltip Text"
+                                                                    data-toggle="tooltip" data-placement="bottom" title="Tooltip Text" 
+                                                                    ng-model="item.tooltipText"
+                                                                    ng-class="{ 'has-error' : item.url.$invalid }" 
+                                                                    >
+                                                            </div>
+                                                        </div>
+
+                                                        
+                                                        <div class="row" >
+                                                            <div class="col-xs-6 noPaddingRight">
+                                                                <div class="row" >
+                                                                    <div class="col-xs-2 noPaddingRight">
+                                                                        <div class="radio" data-toggle="tooltip" data-placement="bottom" title="List icon">
+                                                                            <label>
+                                                                                <input type="radio" name="iconType{{$index}}" ng-model="item.iconType" value="technow" required>
+                                                                                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                                                                <i class="cr-icon fa fa-list-ol"></i>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-2 noPaddingRight">
+                                                                        <div class="radio" data-toggle="tooltip" data-placement="bottom" title="Folder icon">
+                                                                            <label>
+                                                                                <input type="radio" name="iconType{{$index}}" ng-model="item.iconType" value="folder" required>
+                                                                                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                                                                <i class="cr-icon fa fa-folder-open"></i>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-2 noPaddingRight">
+                                                                        <div class="radio" data-toggle="tooltip" data-placement="bottom" title="File icon">
+                                                                            <label>
+                                                                                <input type="radio" name="iconType{{$index}}" ng-model="item.iconType" value="file" required>
+                                                                                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                                                                <i class="cr-icon fa fa-file"></i>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-2 noPaddingRight">
+                                                                        <div class="radio" data-toggle="tooltip" data-placement="bottom" title="Link icon">
+                                                                            <label>
+                                                                                <input type="radio" name="iconType{{$index}}" ng-model="item.iconType" value="link" required>
+                                                                                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                                                                <i class="cr-icon fa fa-external-link"></i>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-6 paddingLeft22 paddingTop10 text-left">
+                                                                <div class="col-xs-3 noPaddingRight noPaddingLeft">
+                                                                    <label for="item.isActive" class="control-label noMargin"><p class="">Is Active:</p></label> 
+                                                                </div>
+                                                                <div class="col-xs-9">
+                                                                    <div class="checkbox sortableCheckbox">
+                                                                        <label>
+                                                                            <input type="checkbox" ng-model="item.isActive" ng-disabled="item.deleteMe" aria-label="Is Active">
+                                                                            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+
+                            <div class="row" >
+                                <div class="col-xs-1">
+                                </div>
+                                <div class="col-xs-10 marginBottom5 marginTop10 center-block floatNone">
+                                    <button type="button" ng-click="addNewItem()" class="btn btn-lg btn-primary btn-block">Add</button>
+                                </div>
+                                <div class="col-xs-1">
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="cancelItems()" data-dismiss="modal">Cancel</button>
+                        <button type="button" ng-disabled="documentationItemsForm.$invalid" ng-click="saveItems()" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+<!-- ################################################################ -->
+
+
+

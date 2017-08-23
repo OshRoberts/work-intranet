@@ -1,0 +1,217 @@
+
+<div id="contactsFormHolder" class="row animated bounceInDown form-horizontal">
+    <div class="col-md-12 marginTop120 marginBottom25 center-block floatNone">
+
+        <h1 class="form-signin-heading text-center turquoiseText marginBottom25">Contacts</h1>
+
+        <div ng-controller="ContactsCtrl as vm">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="docSectionCog pull-right turquoiseText" id="sectionEdit_item.id">
+                        <!--<i class="fa fa-cog fa-2x" ng-class="{'fa-spin': hover}" aria-hidden="true" ng-click="showEditDocumentsPopup()" data-toggle="tooltip" data-placement="right" title="Edit Documents &amp; Links"></i>-->
+                        <i class="fa fa-cog fa-2x" ng-class="{'fa-spin': hover}" aria-hidden="true" ng-click="showEditContactsPopup()"></i>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="popupHolder" ng-show="showPopup">
+                <span class="popupTitle">Edit Contacts</span>
+                <ul class="">
+                    <li ng-click="editMenu()"><i class="fa fa-th-list" aria-hidden="true"></i>Edit Menu</li>
+                    <li ng-click="editSections()"><i class="fa fa-terminal" aria-hidden="true"></i>Edit Sections</li>
+                    <li ng-click="editContacts()"><i class="fa fa-user" aria-hidden="true"></i>Edit Contacts</li>
+                </ul>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-2 noPaddingRight">
+                    <aside>
+
+                        <!--create the left hand menu-->
+                        <ul class="nav nav-pills nav-stacked" ng-init="vm.tab=1">
+                            <li ng-repeat="item in vm.contactsMenuList" ng-class="{ active: vm.tab===item.contactsMenuId }">
+                                <a href ng-click="vm.tab = item.contactsMenuId">{{item.menuTitle}}</a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+
+
+                <div class="col-md-10 noPaddingRight borderTopTurquoise">
+                    
+                    <!--create the main right hand section -->
+                    <div ng-repeat="item in vm.contactsMenuList" ng-show="vm.tab === item.contactsMenuId">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h2 class="marginBottom25 animated fadeIn">{{item.menuDescription}}</h2>
+                            </div>
+                            <div class="col-md-2">
+                                <!--<div class="docSectionCog pull-right turquoiseText" id="sectionEdit_item.id" ng-click="editDocumentationSection(item.id)" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">-->
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="row marginLeft-5 noMarginRight">
+                            
+                            <div>
+                                <uib-tabset active="active">
+                                <!--<uib-tab index="0" heading="Static title">Static content</uib-tab>-->
+                                    <!--<uib-tab index="$index + 1" ng-repeat="tab in tabs" heading="{{tab.title}}" disable="tab.disabled">-->
+                                    <uib-tab index="$index + 1" ng-repeat="section in contactsSectionsList | filter:{ contactsMenuId: item.contactsMenuId }" heading="{{section.sectionTitle}}">
+                                    
+                                        <div ng-repeat="item in contactsItemsList | filter:{ contactsSectionId: section.contactsSectionId }" class="col-xs-12 col-sm-4 padding10 text-center">
+                                            <div class="docHolder animated" ng-class-odd="'leftAnimation zoomIn'" ng-class-even="'rightAnimation zoomIn'" data-toggle="tooltip" data-placement="bottom" title="{{item.tooltipText}}">
+                                                <!--<div class="docHolder animated" ng-style="{{item.animationDelay}}" ng-click="gotoDocument(this)"   data-toggle="tooltip" data-placement="bottom" title="{{item.tooltipText}}">-->
+                                                <div class="row">
+                                                    <div class="col-xs-3 noPaddingRight">
+                                                        <div class="docType">
+                                                            <i class="fa fa-user-circle-o fa-3x hvr-icon-grow" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-9 text-left">
+                                                        <span class="docTitle">{{item.name}}</span>
+                                                        <div class="">{{item.description}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" >
+                                                    <div class="col-xs-12 noPaddingRight text-left">
+                                                        <!--<ul class="contactsInfo">
+                                                            <li class="docDesc"><i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i><a class="mailto" href="mailto:{{item.workEmail}}">{{item.workEmail}}</a></li>
+                                                            <li class="docDesc"><i class="fa fa-fw fa-phone" aria-hidden="true"></i>{{item.workTel}}</li>
+                                                            <li class="docDesc"><i class="fa fa-fw fa-mobile" aria-hidden="true"></i>{{item.workMobile}}</li>
+                                                            <li class="docDesc"><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i>{{item.location}}</li>
+                                                        </ul>-->
+
+                                                        <div class="contactsInfo">
+                                                            <div class="contactsItemInline" ng-class="{ 'scrollingText' : item.longEmail }"><i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i><span><a class="mailto" href="mailto:{{item.workEmail}}">{{item.workEmail}}</a></span></div>
+                                                            <div class="contactsItem"><i class="fa fa-fw fa-phone" aria-hidden="true"></i><a href="tel:{{item.workTel}}" class="mailto">{{item.workTel}}</a></div>
+                                                            <div class="contactsItem"><i class="fa fa-fw fa-mobile" aria-hidden="true"><a href="tel:{{item.workMobile}}" class="mailto"></i>{{item.workMobile}}</a></div>
+                                                            <div class="contactsItem"><i class="fa fa-fw fa-map-marker" aria-hidden="true"></i>{{item.location}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </uib-tab>
+                                </uib-tabset>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<!--<div class="modal fade" ng-show="modalEditSections" tabindex="-1" role="dialog" aria-labelledby="modalEditSectionsLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalEditSectionsLabel">Input Planned Leave</h4>
+      </div>
+      <div class="modal-body">
+        <form action="">
+            <input type="hidden" class="form-control" id="hiddenEventId">
+            <p>Date selected: <span id="selectedDate" class="selectedDateClass"></span></p>
+            <hr>
+
+            <p>Type of absence:</p>
+
+            <select class="form-control input-lg" id="leaveType">
+                <option>Annual Leave</option>
+                <option>Non Working Day</option>
+                <option>Flexi</option>
+                <option>Training</option>
+                <option>Sick</option>
+                <option>Authorised Appointment</option>
+                <option>Working From Home</option>
+                <option>Jury Service</option>
+                <option>Other</option>
+            </select>
+
+            <div class="row hiddenNotImportant" id="otherReasonHolder">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="otherReason" placeholder="Other Reason">
+                    <p class="redText hiddenNotImportant" id="otherReasonValidationMsg">* Reason for absence is mandatory!</p>
+                </div>
+            </div>
+
+            <div class="row" id="absenceLengthHolder">
+                <div class="col-md-12">
+                    <hr>
+                    <p>Length of absence:</p>
+
+                    <div class="btn-group btn-group-justified">
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">AM</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">PM</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">Day</a>
+                        <a href="javascript: void(0)" class="btn btn-default absenceLength">Week</a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger hiddenNotImportant" id="modalDeleteEventBtn">Delete Absence</button>
+        <button type="button" class="btn btn-default" id="modalCloseBtn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="modalSaveBtn" disabled>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+
+
+
+
+
+
+<script>
+
+    
+    $(document).ready(function() {
+        // initialise all tooltips on the page
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+        $("body").popover({ 
+            selector: '[data-toggle=popover]', 
+           // container: 'body' // Popover scrolls with body
+         });
+
+        // $('[data-toggle="popover"]').popover();
+
+    });
+    
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

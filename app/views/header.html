@@ -1,0 +1,48 @@
+<div ng-controller="HeaderCtrl">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="#"><i class="fa fa-home" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+                
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li ng-if="userDetails" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li ng-if="userDetails"><a href="#"><i class="fa fa-fw fa-home" aria-hidden="true"></i>Home</a></li>
+                            <li class="divider"></li>
+                            <li ng-if="userDetails"><a href="#/calendar/first"><i class="fa fa-fw fa-calendar" aria-hidden="true"></i>Leave</a></li>
+                            <li ng-if="userDetails"><a href="http://missbhadtx03.uki.capgemini.com/DTX.NET/Login.aspx" target="_blank"><i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>DTX</a></li>
+                            <li ng-if="userDetails"><a href="#/documentation"><i class="fa fa-fw fa-file" aria-hidden="true"></i>Documents &amp; Links</a></li>
+                            <li ng-if="userDetails"><a href="#/contacts"><i class="fa fa-fw fa-address-book-o" aria-hidden="true"></i>Contacts</a></li>
+                            <!--<li ng-if="userDetails"><a href="#/profile"><i class="fa fa-fw fa-user-circle" aria-hidden="true"></i>{{userDetails.firstname}}</a></li>-->
+                            <li ng-if="userDetails"><a href="#/metrics"><i class="fa fa-fw fa-line-chart" aria-hidden="true"></i>Metrics</a></li>
+                            <li ng-if="userDetails"><a href="#/profile"><i class="fa fa-fw fa-user-circle" aria-hidden="true"></i>My Profile</a></li>
+                            <li ng-if="userDetails.userLevel === '3'"><a href="#/userAdmin"><i class="fa fa-fw fa-users" aria-hidden="true"></i>User Admin</a></li>
+                            <li class="divider"></li>
+                            <li ng-if="userDetails"><a ng-href ng-click='logMeOut()'><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li ng-if="!userDetails"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<script>
+    
+
+</script>

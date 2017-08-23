@@ -1,0 +1,447 @@
+<form ng-submit="submit()" name="userAdminForm" class="form-signin" novalidate>
+    
+    <div id="userAdminFormHolder" class="row animated bounceInDown form-horizontal">
+        <div class="row">
+            <div class="col-md-5 marginTop120 marginBottom25 center-block floatNone">
+
+                <h1 class="form-signin-heading text-center turquoiseText">User Admin</h1>
+
+
+                <div class="row marginBottom10">
+                    <div class="col-xs-12">
+                        <!--<select name="userList" ng-model="userAdmin" class="form-control input-lg">
+                            <option ng-repeat="user in allUsers" value="{{user.name}}">{{user.name}}</option>
+                        </select> -->
+                        <select ng-model="selectedUser" ng-options="user as user.name for user in allUsers" ng-click="userSelected(selectedUser)" class="form-control input-lg">
+                            <option value="">Please Select a User</option>
+                        </select>
+                        <!--<select ng-model='userAdmin' required ng-options='user.value as user.name for user in allUsers'></select>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="inputsHolder" ng-show="showInputsHolder" >
+            
+            <div class="row">
+                <!-- ##### left side #####-->
+                <div class="col-md-6 marginBottom25 animated leftAnimation fadeIn">
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="firstname" class="control-label"><p class="text-info">Firstname:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="firstname"  
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Firstname" 
+                                    ng-model="selectedUser.firstname" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.firstname.$invalid }" 
+                                    required>
+                            <div ng-messages for="userAdminForm.firstname.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Firstname is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="surname" class="control-label"><p class="text-info">Surname:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="surname"  
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Surname" 
+                                    ng-model="selectedUser.surname" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive"
+                                    ng-class="{ 'has-error' : userAdminForm.surname.$invalid }" 
+                                    required>
+                            <div ng-messages for="userAdminForm.surname.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Surname is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="workEmail" class="control-label"><p class="text-info">Work Email:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="workEmail" 
+                                    type="email" 
+                                    class="form-control marginNone" 
+                                    placeholder="Work Email address" 
+                                    ng-model="selectedUser.workEmail" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.workEmail.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.workEmail.$touched && userAdminForm.workEmail.$invalid" class="formInputErrorText">A valid email address is required.</span>-->
+                            <div ng-messages for="userAdminForm.workEmail.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">An email address is required.</div>
+                                <div ng-message="email" class="formInputErrorText">Valid email address only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="workTel" class="control-label"><p class="text-info">Work Tel:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="workTel" 
+                                    type="tel" 
+                                    class="form-control marginNone" 
+                                    placeholder="Work Telephone" 
+                                    ng-model="selectedUser.workTel" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.workTel.$invalid }" 
+                                    required>
+                            <div ng-messages for="userAdminForm.workTel.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Work Telephone is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="workMobile" class="control-label"><p class="text-info">Work Mobile:</p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="workMobile" 
+                                    type="tel" 
+                                    class="form-control marginNone" 
+                                    placeholder="Work Mobile"
+                                    ng-model="selectedUser.workMobile" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.workMobile.$invalid }" >  
+                            <div ng-messages for="userAdminForm.workMobile.$error" class="formInputErrorText">
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                            </div>                                
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="userLevelxx" class="control-label"><p class="text-info">User Level:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="userLevel" ng-model="selectedUser.userLevel" ng-disabled="!selectedUser.isActive" value="1" required>
+                                    <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                    Normal User
+                                </label>
+                            </div>
+                            <div class="radio disabled">
+                                <label>
+                                    <input type="radio" name="userLevel" ng-model="selectedUser.userLevel" ng-disabled="true" value="2" disabled>
+                                    <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                    Some Other Level (disabled)
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="userLevel" ng-model="selectedUser.userLevel" ng-disabled="!selectedUser.isActive" value="3" required>
+                                    <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                                    Admin User
+                                </label>
+                            </div>
+                            <!--<span ng-show="userAdminForm.userLevel.$touched && userAdminForm.userLevel.$invalid" class="formInputErrorText">A user level is required.</span>-->
+                            <div ng-messages for="userAdminForm.userLevel.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">A User Level is required.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="selectedUser.documentsEditor" class="control-label text-left-important noPaddingTop"><p class="text-info">Documents &amp; Links Editor:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="selectedUser.documentsEditor" aria-label="Documents &amps; Links Editor">
+                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="leaveQuota" class="control-label"><p class="text-info">Leave Quota:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-3">
+                            <input name="leaveQuota" 
+                                    type="number" 
+                                    class="form-control marginNone" 
+                                    placeholder="Leave quota" 
+                                    ng-model="selectedUser.leaveQuota" 
+                                    ng-pattern="/^[0-9]+$/" 
+                                    ng-blur="checkQuota(userAdminForm)"
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.leaveQuota.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.leaveQuota.$error.required" class="formInputErrorText">Leave Quota is required.</span>
+                            <span ng-show="userAdminForm.leaveQuota.$error.pattern" class="formInputErrorText">Numeric characters only.</span>-->
+                            <div ng-messages for="userAdminForm.leaveQuota.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Leave Quota is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                                <div ng-message="leaveQuotaRangeError">Leave Quota must be between 10 and 50 days.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="selectedUser.isActive" class="control-label"><p class="text-info">Is Active:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="selectedUser.isActive" aria-label="Is Active">
+                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+<!-- #################### right side #################### -->
+                <div class="col-md-6 marginBottom25 animated rightAnimation fadeIn">
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeEmail" class="control-label"><p class="text-info">Home Email:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeEmail" 
+                                    type="email" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Email address" 
+                                    ng-model="selectedUser.homeEmail" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.homeEmail.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.homeEmail.$touched && userAdminForm.homeEmail.$invalid" class="formInputErrorText">A valid email address is required.</span>-->
+                            <div ng-messages for="userAdminForm.homeEmail.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">An email address is required.</div>
+                                <div ng-message="email" class="formInputErrorText">Valid email address only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeTel" class="control-label"><p class="text-info">Home Tel:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeTel"  
+                                    type="tel" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Telephone" 
+                                    ng-model="selectedUser.homeTel" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive"
+                                    ng-class="{ 'has-error' : userAdminForm.homeTel.$invalid }" 
+                                    required>
+                            <div ng-messages for="userAdminForm.homeTel.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Home Telephone is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeMobile" class="control-label"><p class="text-info">Home Mobile:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeMobile" 
+                                    type="tel" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Mobile" 
+                                    ng-model="selectedUser.homeMobile" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.homeMobile.$invalid }" 
+                                    required>
+                            <div ng-messages for="userAdminForm.homeMobile.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Home Mobile is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeAddress1" class="control-label"><p class="text-info">Home Address:<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeAddress1"  
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Address (line 1)" 
+                                    ng-model="selectedUser.homeAddress1" 
+                                    ng-pattern="/^[a-zA-Z0-9-_() ]+$/" 
+                                    ng-disabled="!selectedUser.isActive"
+                                    ng-class="{ 'has-error' : userAdminForm.homeAddress1.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.homeAddress1.$touched && userAdminForm.homeAddress1.$invalid" class="formInputErrorText">Home Address (line 1) is required.</span>-->
+                            <div ng-messages for="userAdminForm.homeAddress1.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Home Address (line 1) is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeAddress2" class="control-label"><p class="text-info"> </p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeAddress2" 
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Address (line 2)" 
+                                    ng-model="selectedUser.homeAddress2" 
+                                    ng-pattern="/^[a-zA-Z0-9-_() ]+$/"
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.homeAddress2.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.homeAddress2.$touched && userAdminForm.homeAddress2.$invalid" class="formInputErrorText">Home Address (line 2) is required.</span>-->
+                            <div ng-messages for="userAdminForm.homeAddress2.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Home Address (line 2) is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeAddress3" class="control-label"><p class="text-info"> </p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeAddress3" 
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Address"
+                                    ng-model="selectedUser.homeAddress3"  
+                                    ng-pattern="/^[a-zA-Z0-9-_() ]+$/"
+                                    ng-disabled="!selectedUser.isActive"  >
+                            <div ng-messages for="userAdminForm.homeAddress3.$error" class="formInputErrorText">
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homeAddress4" class="control-label"><p class="text-info"> </p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="homeAddress4"  
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Address"
+                                    ng-model="selectedUser.homeAddress4"  
+                                    ng-pattern="/^[a-zA-Z0-9-_() ]+$/"
+                                    ng-disabled="!selectedUser.isActive" >
+                            <div ng-messages for="userAdminForm.homeAddress4.$error" class="formInputErrorText">
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="homePostcode" class="control-label"><p class="text-info">Home Postcode<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-3">
+                            <input name="homePostcode" 
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Home Postcode" 
+                                    ng-model="selectedUser.homePostcode"  
+                                    ng-pattern="/^[a-zA-Z0-9 ]+$/"
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.homePostcode.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.homePostcode.$touched && userAdminForm.homePostcode.$invalid" class="formInputErrorText">Home Postcode is required.</span>-->
+                            <div ng-messages for="userAdminForm.homePostcode.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Home Postcode is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="emergencyContactName" class="control-label text-left-important"><p class="text-info">Emergency Contact Name<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="emergencyContactName"  
+                                    type="text" 
+                                    class="form-control marginNone" 
+                                    placeholder="Emergency Contact Name" 
+                                    ng-model="selectedUser.emergencyContactName" 
+                                    ng-pattern="/^[a-zA-Z0-9-_() ]+$/" 
+                                    ng-disabled="!selectedUser.isActive"
+                                    ng-class="{ 'has-error' : userAdminForm.emergencyContactName.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.emergencyContactName.$touched && userAdminForm.emergencyContactName.$invalid" class="formInputErrorText">Emergency Contact Name is required.</span>-->
+                            <div ng-messages for="userAdminForm.emergencyContactName.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Emergency Contact Name is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Alphanumeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row marginBottom10">
+                        <div class="col-xs-3 turquoiseText noPaddingRight">
+                            <label for="emergencyContactTel" class="control-label text-left-important"><p class="text-info">Emergency Contact Tel<sup><i class="fa fa-asterisk orangeText" aria-hidden="true"></i></sup></p></label> 
+                        </div>
+                        <div class="col-xs-9">
+                            <input name="emergencyContactTel" 
+                                    type="tel" 
+                                    class="form-control marginNone" 
+                                    placeholder="Emergency Contact Tel" 
+                                    ng-model="selectedUser.emergencyContactTel" 
+                                    ng-pattern="/^[a-zA-Z0-9-_ ]+$/" 
+                                    ng-disabled="!selectedUser.isActive" 
+                                    ng-class="{ 'has-error' : userAdminForm.emergencyContactTel.$invalid }" 
+                                    required>
+                            <!--<span ng-show="userAdminForm.emergencyContactTel.$touched && userAdminForm.emergencyContactTel.$invalid" class="formInputErrorText">Emergency Contact Tel is required.</span>-->
+                            <div ng-messages for="userAdminForm.emergencyContactTel.$error" class="formInputErrorText">
+                                <div ng-message="required" class="formInputErrorText">Emergency Contact Tel is required.</div>
+                                <div ng-message="pattern" class="formInputErrorText">Numeric characters only.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-5 marginBottom25 center-block floatNone">
+                    <!--<p class="help-block" ng-show="login.email.$dirty && login.email.$invalid">Please enter a proper email.</p>-->
+                    <button ng-disabled="userAdminForm.$invalid" class="btn btn-lg btn-primary btn-block" id="saveSelectedUserBtn" type="submit">Save</button>
+                    <br />
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</form>

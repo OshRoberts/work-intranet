@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Leave Booking App</title>
+
+        <link rel="stylesheet" href="scripts/bootstrap/dist/css/bootstrap_superhero.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/animate.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />   
+        <link rel="stylesheet" href="css/ng-sortable.min.css">
+        <link rel="stylesheet" href="css/ng-sortable.style.min.css">
+        <link rel='stylesheet' href='css/fullcalendar.css' />
+        <link rel='stylesheet' href='css/checkbox_radio_styles.css' />
+        <link rel="stylesheet" href="css/leaveBooking.css">
+    </head>
+
+    <body ng-app="capgeminiNewcastleApp">
+
+        <div ng-include src="'views/header.html'" scope=this></div>
+
+        <div class="container">
+            <div ng-view></div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="../scripts/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.6.1/angular-messages.min.js"></script>
+        <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+        <!--<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+
+        <!--<script src="node_modules/chart.js/dist/Chart.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-charts/0.2.7/angular-charts.min.js"></script>
+
+        <script src="https://rawgit.com/dwmkerr/angular-modal-service/master/dst/angular-modal-service.js"></script>
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+        
+        <script src="../scripts/validator.min.js"></script>
+        <script src="../scripts/ng-sortable.min.js"></script>
+
+        <script src="app.module.js"></script>
+        <script src="application/applicationSvc.js"></script>
+        <script src="login/loginCtrl.js"></script>
+        <script src="passwordReset/passwordResetCtrl.js"></script>
+        <script src="shared/headerCtrl.js"></script>
+        <script src="calendar/calendarCtrl.js"></script>
+        <script src="userAdmin/userAdminCtrl.js"></script>
+        <script src="documentation/documentationCtrl.js"></script>
+        <script src="contacts/contactsCtrl.js"></script>
+        <script src="profile/profileCtrl.js"></script>
+        <script src="metrics/metricsCtrl.js"></script>
+
+        <script src="requestAccess/requestAccessCtrl.js"></script>
+
+        <script src="registration/registerCtrl.js"></script>
+        <!--<script src="books/booksCtrl.js"></script>
+        <script src="books/booksFactory.js"></script>-->
+
+        <script>
+
+            /** Toastr messaging options **/
+            toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "500",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                            };
+
+        </script>
+    </body>
+</html>

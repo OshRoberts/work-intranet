@@ -1,0 +1,107 @@
+<div ng-controller="HeaderCtrl">
+    
+    <!-- user NOT logged in-->
+    <div ng-if="!userDetails">
+        <div class="bg-1">
+            <div class="container text-center">
+                <h1 class="marginTop150 marginBottom50 turquoiseText">Welcome to</h1>
+
+                    <a ng-if="!userDetails" href="#/login"><img src="../img/Capgemini_Label_CBE_no shadow.png"class="box350 marginBottom50 animated flipInY" alt="Capgemini logo"  data-toggle="tooltip" data-placement="right"  title="Click me to Login"></a>
+                    <!--<a ng-if="userDetails" href="#/calendar"><img src="../img/Capgemini_Label_CBE_no shadow.png"class="box350 marginBottom50 animated flipInY" alt="Capgemini logo"  data-toggle="tooltip" data-placement="bottom"  title="Click me to enter"></a>-->
+
+                <h1 class="marginBottom50 turquoiseText">Capgemini Newcastle</h1>
+            </div>
+        </div>
+
+        <div class="container-fluid bg-2 text-center greyText">
+            <!--<h3>Please Note:</h3>-->
+            <p>This website is for the use of Capgemini employees only.</p>
+            <p>Unauthorised access is not permitted..</p>
+        </div>
+    </div>
+
+    <!-- user logged in-->
+    <div ng-if="userDetails" >
+        <div id="" class="row animated fadeIn">
+            <div class="col-xs-10 marginTop150 marginBottom25 center-block floatNone">
+
+                <h1 class="form-signin-heading text-muted turquoiseText">&nbsp;</h1>
+
+                <div class="row row-centered">
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn" ng-click="mainMenuSelected('LEAVE')">
+                            <i class="fa fa-fw fa-calendar fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">Leave</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn animationDelay_1" ng-click="mainMenuSelected('DTX')">
+                            <i class="fa fa-fw fa-clock-o fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">DTX</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn animationDelay_2" ng-click="mainMenuSelected('DOCUMENTATION')">
+                            <i class="fa fa-fw fa-file fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">Documents &amp; Links</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn animationDelay_2" ng-click="mainMenuSelected('CONTACTS')">
+                            <i class="fa fa-fw fa-address-book-o fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">Contacts</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn animationDelay_2" ng-click="mainMenuSelected('METRICS')">
+                            <i class="fa fa-fw fa-line-chart fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">Metrics</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered">
+                        <div class="box animated fadeIn animationDelay_2" ng-click="mainMenuSelected('PROFILE')">
+                            <i class="fa fa-fw fa-user-circle fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">My Profile</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 padding10 text-center col-centered" ng-if="userDetails.userLevel === '3'">
+                        <div class="box animated fadeIn animationDelay_3" ng-click="mainMenuSelected('USERADMIN')">
+                            <i class="fa fa-fw fa-users fa-4x" aria-hidden="true"></i>
+                            <h4 class="boxTitle">User Admin</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row marginTop50 animated bounceInUp">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-lg btn-primary btn-block" 
+                        id="refreshIncidentData" 
+                        type="button" 
+                        ng-click="refreshIncidentData()" 
+                        ng-switch on="refreshingIndic">
+                            <span ng-switch-when="true"><i class="fa fa-refresh fa-spin fa-fw"></i> Refreshing Data...</span>
+                            <span ng-switch-when="false">Manually Refresh Metrics Data</span>
+                </button>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // initialise all tooltips on the page
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+</script>

@@ -1,0 +1,49 @@
+<form ng-submit="submit()" name="requestAccess" class="form-signin" novalidate>
+    
+    <div class="row animated bounceInRight">
+        <div class="col-md-5 marginTop150 marginBottom25 center-block floatNone">
+
+            <h1 class="turquoiseText">Request Access</h1>
+            <div class="row marginBottom10">
+                <div class="col-xs-6">
+                    <input name="firstname" ng-model="firstname" type="text" class="form-control marginNone" placeholder="Firstname" required>
+                    <span ng-show="requestAccess.firstname.$touched && requestAccess.firstname.$invalid" class="formInputErrorText">Firstname is required.</span>
+                </div>
+                <div class="col-xs-6">
+                    <input name="surname" ng-model="surname" type="text" class="form-control marginNone" placeholder="Surname" required>
+                    <span ng-show="requestAccess.surname.$touched && requestAccess.surname.$invalid" class="formInputErrorText">Surname is required.</span>
+                </div>
+            </div>
+
+            <div class="row marginBottom10">
+                <div class="col-xs-12">
+                    <input name="email" ng-model="email" type="email" class="form-control marginNone" placeholder="Email address" required>
+                    <span ng-show="requestAccess.email.$touched && requestAccess.email.$invalid" class="formInputErrorText">A valid email address is required.</span>
+                </div>
+            </div>
+
+            <div class="row marginBottom10">
+                <div class="col-xs-12">
+                    <button ng-disabled="requestAccess.$invalid" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                </div>
+            </div>
+
+            <div class="row marginTop50">
+                <div class="col-md-12 text-justify greyText">
+                    <p><i class="fa fa-info-circle fa-4x fa-pull-left" aria-hidden="true"></i>Please complete the fields above and hit the Submit button.</p>
+                    <p>You will receive an email with instructions for logging on once the System Admin has reviewed and approved your application.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<!-- request access
+
+
+account: capgeminiNE@gmail.com
+pwd: Cg6X3Lg@5#!1
+
+-->

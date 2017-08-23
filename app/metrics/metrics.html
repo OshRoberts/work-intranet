@@ -1,0 +1,565 @@
+
+
+    <div id="metricsHolder" class="row animated fadeIn form-horizontal"  ng-controller="MetricsCtrl">
+        <div class="row">
+            <div class="col-md-5 marginTop120 marginBottom10 center-block floatNone">
+                <h1 class="form-signin-heading text-center turquoiseText">Metrics</h1>
+            </div>
+        </div>
+
+        
+
+        <div class="row">
+            
+            <div class="col-md-12 animated leftAnimation fadeIn">
+                <!-- <h3 class="form-signin-heading text-center turquoiseText marginBottom25">User Activity</h3> -->
+                
+               
+                <div style="height: 865px">
+                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+            
+                        <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+
+                            <!-- ########################################## Slide 0 ########################################## -->
+                            <div ng-if="slide.id == 0" style="height: 860px">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h2 class="">Incidents and Problems</h2>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="text-right greyText noMargin paddingTop30">Last updated: {{lastUpdatedTimeIncidents | date:"EEE, MMMM d, y 'at' h:mma"}}</p>
+                                        <!--<p class="text-right greyText noMargin">Last updated: {{now}}</p>-->
+                                        <!-- <p class="marginBottom25 text-right greyText">[Data updated every hour, on the hour]</p> -->
+                                    </div>
+                                </div>
+
+
+                                <div class="row marginBottom10">
+                                    <div class="col-md-6 animated leftAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">Open Incidents</h3>
+                                        <canvas id="myChart" width="600" height="400" ng-if="datasetsChart1[0].data.length > 0"></canvas>
+                                        <div class="noNewIncidents animated tada" width="600" height="400" ng-if="!datasetsChart1[0].data.length">No Open Incidents!</div>   
+                                    </div>
+
+                                    <div class="col-md-6 animated rightAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">Open Problems</h3>
+                                        <canvas id="myChart2" width="600" height="400" ng-if="datasetsChart2[0].data.length > 0"></canvas>
+                                        <div class="noNewIncidents animated tada" width="600" height="400" ng-if="!datasetsChart2[0].data.length">No Open Problems!</div>   
+                                    </div>
+                                </div>
+
+
+                                <div class="row marginBottom50">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <div class="col-md-4 animated leftAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">Incidents Raised This SMP</h3>
+                                        <canvas id="myChart3" width="600" height="400" ng-if="datasetsChart3[0].data.length > 0"></canvas>  
+                                        <div class="noNewIncidents animated tada" width="600" height="400" ng-if="!datasetsChart3[0].data.length">No New Incidents!</div>   
+                                    </div>
+                                    <div class="col-md-2 text-center orangeText">
+                                        <h3 class="marginTop100">Current SMP:</h3>
+                                        <h3 class="">{{currentSMP}}</h3>
+                                    </div>
+                                    <div class="col-md-4 animated leftAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">Problems Raised This SMP</h3>
+                                        <canvas id="myChart4" width="600" height="400" ng-if="datasetsChart4[0].data.length > 0"></canvas>  
+                                        <div class="noNewIncidents animated tada" width="600" height="400" ng-if="!datasetsChart4[0].data.length">No New Problems!</div>  
+                                    </div>
+                                    <div class="col-md-1">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- ########################################## Slide 1 ########################################## -->
+                            <div ng-if="slide.id == 1" style="height: 860px">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h2 class="">Incidents and Problems</h2>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="text-right greyText noMargin paddingTop30">Last updated: {{lastUpdatedTimeIncidents | date:"EEE, MMMM d, y 'at' h:mma"}}</p>
+                                        <!--<p class="text-right greyText noMargin">Last updated: {{now}}</p>-->
+                                        <!-- <p class="marginBottom25 text-right greyText">[Data updated every hour, on the hour]</p> -->
+                                    </div>
+                                </div>
+
+
+                                <div class="row marginBottom10">
+                                    <div class="col-md-12 animated leftAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">User Activity</h3>
+                                    </div>
+                                </div>
+                                <div class="row marginBottom10">
+                                    <div class="col-md-6 animated fadeIn">
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-6">
+                                                <div class="userStatsHolder fadedRedBackground borderRed">
+                                                    <!-- <i class="fa fa-trophy fa-4x" aria-hidden="true"></i> -->
+                                                    <p class="text-center text-uppercase font09">Closed Most Incidents This SMP:</p>
+                                                    <p class="text-center turquoiseText font18 caviarFont animated tada" ng-repeat="user in userClosedMostIncidentsThisSMP">{{user}}</p>
+                                                    <p class="text-center text-uppercase font09"># of Incidents Closed: <span class="font28 redText boldText caviarFont verticalAlignMiddle paddingLeft5 count">{{userClosedMostIncidentsThisSMPCount}}</span></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="userStatsHolder fadedBlueBackground borderBlue">
+                                                    <p class="text-center text-uppercase font09">Closed Most Incidents This Yr:</p>
+                                                    <p class="text-center turquoiseText font18 caviarFont animated tada" ng-repeat="user in userClosedMostIncidentsThisYear">{{user}}</p>
+                                                    <p class="text-center text-uppercase font09"># of Incidents Closed: <span class="font28 blueText boldText caviarFont verticalAlignMiddle paddingLeft5 count">{{userClosedMostIncidentsThisYearCount}}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-12">
+                                                <div class="userStatsHolder fadedYellowBackground borderYellow">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <h2 class="text-center text-uppercase marginTop2">Incident</h2>
+                                                            <h2 class="text-center text-uppercase marginTop2">Closure</h2>
+                                                            <h2 class="text-center text-uppercase marginTop2">Leaderboard</h2>
+                                                        </div>
+                                                        <div class="col-md-7">
+
+                                                            <div class="row" ng-repeat="userAllTime in usersClosedMostIncidentsAllTime">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">{{userAllTime._id}}: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 yellowText boldText caviarFont verticalAlignMiddle count animated tada">{{userAllTime.count}}</p>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <!-- <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">Phil Taylor: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 yellowText boldText caviarFont verticalAlignMiddle count animated tada">273</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">Ian Fothergill: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 yellowText boldText caviarFont verticalAlignMiddle count animated tada">214</p>
+                                                                </div>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-12">
+                                                <div class="dummyStatsHolder">
+                                                    <h3>We Have Dealt With</h3>
+                                                    <h1 class="orangeText boldText animated tada">{{closedIncidentsTotalCount}}</h1>
+                                                    <h3>Incidents In Total</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 animated fadeIn">
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-12">
+                                                <div class="dummyStatsHolder">
+                                                    <h3>We Have Dealt With</h3>
+                                                    <h1 class="orangeText boldText animated tada">3,120</h1>
+                                                    <h3>Problems In Total</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-12">
+                                                <div class="userStatsHolder fadedGreenBackground borderGreen">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <h2 class="text-center text-uppercase marginTop2">Problem</h2>
+                                                            <h2 class="text-center text-uppercase marginTop2">Resolving</h2>
+                                                            <h2 class="text-center text-uppercase marginTop2">Leaderboard</h2>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">Phil Taylor: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 greenText boldText caviarFont verticalAlignMiddle count animated tada">257</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">Osh Roberts: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 greenText boldText caviarFont verticalAlignMiddle count animated tada">182</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <p class="text-left turquoiseText font18 caviarFont">Ian Fothergill: </p>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <p class="font18 greenText boldText caviarFont verticalAlignMiddle count animated tada">139</p>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row marginBottom10">
+                                            <div class="col-md-6">
+                                                <div class="userStatsHolder fadedPurpleBackground borderPurple">
+                                                    <!-- <i class="fa fa-trophy fa-4x" aria-hidden="true"></i> -->
+                                                    <p class="text-center text-uppercase font09">Closed Most Problems This SMP:</p>
+                                                    <p class="text-center turquoiseText font18 caviarFont animated tada">Ian Fothergill</p>
+                                                    <p class="text-center text-uppercase font09"># of Incidents Closed: <span class="font28 purpleText boldText caviarFont verticalAlignMiddle paddingLeft5 count">7</span></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="userStatsHolder fadedDarkRedBackground borderDarkRed">
+                                                    <p class="text-center text-uppercase font09">Closed Most Problems This Yr:</p>
+                                                    <p class="text-center turquoiseText font18 caviarFont animated tada">Phil Taylor</p>
+                                                    <p class="text-center text-uppercase font09"># of Incidents Closed: <span class="font28 orangeText boldText caviarFont verticalAlignMiddle paddingLeft5 count">67</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            
+                            <!-- ########################################## Slide 2 ########################################## -->
+                            <div ng-if="slide.id == 2" style="height: 860px">
+                                <div class="row marginBottom50">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-8 animated leftAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText marginBottom25">DWP ADEP Incident Activity to SMP03/2017</h3>
+                                        <canvas id="myChart24" width="600" height="500"></canvas>
+                                    </div>
+                                    <div class="col-md-2">
+                                    </div>
+                                    <!--<div class="col-md-6 marginBottom25 animated rightAnimation fadeIn">
+                                        <h3 class="form-signin-heading text-center turquoiseText">Open incidents at end of SMP / Weekly Run Rate</h3>
+                                        <canvas id="myChart6" width="300" height="300"></canvas>
+                                    </div>-->
+                                </div>
+                            </div>
+
+                            <!-- ########################################## Slide 3 ########################################## -->
+                            <div ng-if="slide.id == 3" style="height: 860px">
+                                <h2> LEAN</h2>
+                            </div>
+
+                            <!-- ########################################## Slide 4 ########################################## -->
+                            <div ng-if="slide.id == 4" style="height: 860px">
+                                <img ng-src="{{slide.image}}" style="margin:auto;">
+                                <div class="carousel-caption">
+                                    <h4>Slide {{slide.id}}</h4>
+                                    <p>{{slide.text}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="row marginBottom50">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8 animated leftAnimation fadeIn">
+                <h3 class="form-signin-heading text-center turquoiseText marginBottom25">DWP ADEP Incident Activity to SMP03/2017</h3>
+                <canvas id="myChart5" width="600" height="500"></canvas>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div> -->
+
+    </div>
+
+
+
+
+<script>
+
+    
+    $(document).ready(function() {
+
+        // $('.count').each(function () {
+        //     $(this).prop('Counter',0).animate({
+        //         Counter: $(this).text()
+        //     }, {
+        //         duration: 4000,
+        //         easing: 'swing',
+        //         step: function (now) {
+        //             $(this).text(Math.ceil(now));
+        //         }
+        //     });
+        // });
+
+
+    // get scope variables
+    var scope = angular.element($("#metricsHolder")).scope();
+
+    // ######################### chart 1 - Open Incidents #########################
+    if ( scope.datasetsChart1[0].data.length > 0) {
+        // alert( '1 = ' + scope.datasetsChart1[0].data.length);
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                // labels: ["CRU", "DMACR", "CMT", "BCAS", "HBSDC", "PSOD"],
+                labels: scope.labelsChart1,
+                datasets: scope.datasetsChart1
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true,
+                            fontColor: '#7c8ea0',
+                            stepSize: 2
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Number of Incidents',
+                            fontColor: '#7c8ea0',
+                            fontSize: 14
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#7c8ea0'
+                        }
+                    }]
+                },
+                legend: {
+                    display: false,
+                    position: 'bottom',
+                    labels: {
+                        fontColor: '#7c8ea0'
+                    }
+                },
+                tooltips: {
+                    displayColors: true,
+                    backgroundColor: '#142434'
+                }
+            }
+        });
+    }
+
+//####################################################################
+
+
+
+    if ( scope.datasetsChart2[0].data.length > 0) {
+        var ctx2 = document.getElementById("myChart2").getContext('2d');
+        var myChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: scope.labelsChart2,
+                datasets: scope.datasetsChart2
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor: '#7c8ea0'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Number of Problems',
+                            fontColor: '#7c8ea0',
+                            fontSize: 14
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#7c8ea0'
+                        }
+                    }]
+                },
+                legend: {
+                    display: false,
+                    position: 'bottom',
+                    labels: {
+                        fontColor: '#7c8ea0'
+                    }
+                },
+                tooltips: {
+                    backgroundColor: '#142434',
+                    displayColors: true
+                }
+            }
+        });
+    }
+
+//####################################################################
+
+    if ( scope.datasetsChart3[0].data.length > 0) {
+        var ctx3 = document.getElementById("myChart3").getContext('2d');
+        var myChart = new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                labels: scope.labelsChart3,
+                datasets: scope.datasetsChart3
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            display: false,
+                            beginAtZero:true,
+                            fontColor: '#7c8ea0'
+                        }
+                    }]
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        fontColor: '#7c8ea0'
+                    }
+                },
+                tooltips: {
+                    backgroundColor: '#142434',
+                    displayColors: true
+                }
+            }
+        });
+    }
+
+
+
+//####################################################################
+
+    if ( scope.datasetsChart4[0].data.length > 0) {
+        var ctx4 = document.getElementById("myChart4").getContext('2d');
+        var myChart = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: scope.labelsChart4,
+                datasets: scope.datasetsChart4
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            display: false,
+                            beginAtZero:true,
+                            fontColor: '#7c8ea0'
+                        }
+                    }]
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        fontColor: '#7c8ea0'
+                    }
+                },
+                tooltips: {
+                    backgroundColor: '#142434',
+                    displayColors: true
+                }
+            }
+        });
+    }
+
+
+
+//####################################################################
+
+/*
+var ctx5 = document.getElementById("myChart5").getContext('2d');
+// ctx5.canvas.width = 600;
+ctx5.canvas.height = 300;
+var myChart = new Chart(ctx5, {
+    type: 'line',
+    data: {
+        labels: scope.labelsChart5,
+        datasets: scope.datasetsChart5
+    },
+    options: {
+        responsive: true,
+        // tooltips: {
+        //     mode: 'index',
+        //     enabled: true,
+        //     intersect: false
+        // },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Month',
+                    fontColor: '#7c8ea0',
+                    fontSize: 14
+                },
+                ticks: {
+                    fontColor: '#7c8ea0'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Incidents',
+                    fontColor: '#7c8ea0',                    
+                    fontSize: 14
+                },
+                ticks: {
+                    fontColor: '#7c8ea0'
+                }
+            }]
+        },
+        legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+                fontColor: '#7c8ea0'
+            }
+        },
+        elements: {
+            line: {
+                tension: 0, // disables bezier curves
+            }
+        },
+        tooltips: {
+            backgroundColor: '#142434',
+            displayColors: true
+        }
+    }
+
+
+});
+*/
+
+});
+
+</script>

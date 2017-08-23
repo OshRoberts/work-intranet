@@ -1,0 +1,33 @@
+<form ng-submit="submit()" name="register" class="form-signin" novalidate>
+    
+    <div class="row animated fadeIn">
+        <div class="col-md-5 marginTop150 marginBottom25 center-block floatNone">
+
+            <h1 class="turquoiseText">Register</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <input name="firstname" ng-model="firstname" type="text" class="form-control" placeholder="Firstname" required>
+                </div>
+                <div class="col-md-6">
+                    <input name="surname" ng-model="surname" type="text" class="form-control" placeholder="Surname" required>
+                </div>
+            </div>
+            <input name="email" ng-model="email" type="email" class="form-control" placeholder="Email address" required>
+            <p class="help-block" ng-show="register.email.$dirty && register.email.$invalid">Please enter a proper email.</p>
+            <input name="password" ng-model="password" type="password" class="form-control" placeholder="Password" required>
+            <input name="password_confirm" ng-model="password_confirm" type="password" class="form-control" placeholder="Confirm Password" validate-equals='password'>
+            <p class="help-block" ng-show="register.password_confirm.$dirty && register.password_confirm.$invalid">please match the passwords.</p>
+            <button ng-disabled="register.$invalid" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+
+
+<!-- request access
+
+
+account: capgeminiNE@gmail.com
+pwd: Cg6X3Lg@5#!1
+
+-->
